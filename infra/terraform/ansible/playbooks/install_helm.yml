@@ -1,0 +1,12 @@
+- name: Install Helm
+  hosts: all
+  become: yes
+  tasks:
+    - name: Download Helm install script
+      get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get-helm-3
+        mode: "0755"
+
+    - name: Run Helm install script
+      command: /tmp/get-helm-3

@@ -1,0 +1,37 @@
+- name: Install Kubernetes (kubeadm, kubelet, kubectl)
+  hosts: all
+  become: yes
+  tasks:
+    - name: Add Kubernetes apt key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Add Kubernetes repository
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+
+    - name: Install Kubernetes packages
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
+
+    - name: Hold Kubernetes packages at current version
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
+        allow_unauthenticated: yes
+        force: yes
+        autoremove: no
+        install_recommends: no
+        only_upgrade: no
+        dpkg_options: "hold"
